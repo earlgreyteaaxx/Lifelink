@@ -1,0 +1,84 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+
+const ChatScreen = () => {
+    const [messages, setMessages] = useState([]);
+    const [inputText, setInputText] = useState('');
+
+    // Dummy function to simulate sending a message
+    const sendMessage = () => {
+        if (inputText.trim() !== '') {
+            const newMessage = {
+                id: messages.length + 1,
+                text: inputText,
+                sender: 'User',
+                timestamp: new Date().toLocaleTimeString()
+            };
+            setMessages([...messages, newMessage]);
+            setInputText('');
+        }
+    };
+
+    return (
+        <View style={styles.container}>
+            <ScrollView style={styles.messageContainer}>
+                {messages.map(msg => (
+                    <View key={msg.id} style={styles.messageBox}>
+                        <Text style={styles.messageText}>{msg.text}</Text>
+                        <Text style={styles.timeText}>{msg.timestamp}</Text>
+                    </View>
+                ))}
+            </ScrollView>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    value={inputText}
+                    onChangeText={setInputText}
+                    placeholder="Type your message..."
+                />
+                <Button title="Send" onPress={sendMessage} />
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: '#fff'
+    },
+    messageContainer: {
+        flex: 1,
+        paddingBottom: 10
+    },
+    messageBox: {
+        backgroundColor: '#f0f0f0',
+        padding: 8,
+        borderRadius: 10,
+        marginVertical: 4
+    },
+    messageText: {
+        fontSize: 16,
+        color: '#333'
+    },
+    timeText: {
+        fontSize: 12,
+        color: '#666',
+        textAlign: 'right'
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        padding: 8
+    },
+    input: {
+        flex: 1,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        marginRight: 8,
+        paddingHorizontal: 10,
+        borderRadius: 10
+    }
+});
+
+export default ChatScreen;
